@@ -9,3 +9,9 @@ export default {
   name: "Header"
 };
 </script>
+
+<style lang="scss" scoped>
+.v-scloud-header {
+  grid-area: h;
+}
+</style>

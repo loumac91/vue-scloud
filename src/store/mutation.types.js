@@ -1,3 +1,6 @@
+// APP
+export const SET_SHOW_PLAYER = "SET_SHOW_PLAYER";
+
 // LOADING
 export const SET_ACTION_STATE = "SET_ACTION_STATE";
 

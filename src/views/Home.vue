@@ -1,11 +1,11 @@
 <template>
-  <main class="app-container">
+  <div>
     <h1>Home</h1>
     <button @click="handleClick">getTracks</button>
     <div class="card">
       <h1>Hello Vorld</h1>
     </div>
-  </main>
+  </div>
 </template>
 
 <script>
@@ -18,3 +18,5 @@ export default {
   }
 };
 </script>
+
+<style lang="scss" scoped></style>

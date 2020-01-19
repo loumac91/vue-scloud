@@ -1,7 +1,9 @@
 <template>
   <div id="app">
     <Header />
-    <router-view />
+    <main class="app-container">
+      <router-view />
+    </main>
     <Player />
   </div>
 </template>
@@ -25,6 +27,10 @@ export default {
   grid-template-areas:
     "h h h"
     "m m m"
-    "f f f";
+    "f f f"; // TODO - redundant?
+}
+
+.app-container {
+  grid-area: m;
 }
 </style>

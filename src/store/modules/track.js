@@ -12,7 +12,6 @@ const getters = {};
 const actions = {
   [FETCH_TRACKS]: async function({ commit }, query) {
     const tracks = await fetchTracks(query);
-    console.log("tracks", tracks);
     commit(SET_TRACKS, tracks);
   }
 };

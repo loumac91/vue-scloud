@@ -22,7 +22,7 @@ const getters = {
 
 const actions = {
   [SET_ACTION_LOADING_STATE]: function({ commit }, action) {
-    commit(action);
+    commit(SET_LOADING_STATE, action);
   }
 };
 
