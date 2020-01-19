@@ -2,6 +2,9 @@
   <main class="app-container">
     <h1>Home</h1>
     <button @click="handleClick">getTracks</button>
+    <div class="card">
+      <h1>Hello Vorld</h1>
+    </div>
   </main>
 </template>
 

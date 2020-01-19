@@ -11,6 +11,7 @@
 //
 // 4. Set root element font-size
 //
+
 html {
     min-height: 100%;                    // [1]
     -webkit-text-size-adjust: 100%;      // [2]
@@ -19,7 +20,7 @@ html {
     -webkit-font-smoothing: antialiased; // [3]
     font-size: $root-font-size;          // [4]
     cursor: default;
-    background-color: $base-background-color;
+    background-color: $black;
 }
 
 body {
