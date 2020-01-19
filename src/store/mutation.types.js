@@ -1,1 +1,5 @@
+// LOADING
+export const SET_ACTION_STATE = "SET_ACTION_STATE";
+
+// TRACKS
 export const SET_TRACKS = "SET_TRACKS";
