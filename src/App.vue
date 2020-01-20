@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <Header />
-    <main class="app-container">
+    <main class="page-container">
       <router-view />
     </main>
     <Player />
@@ -9,8 +9,8 @@
 </template>
 
 <script>
-import Header from "./components/Header.vue";
-import Player from "./components/Player.vue";
+import Header from "@/components/Header.vue";
+import Player from "@/components/Player.vue";
 
 export default {
   name: "App",
@@ -25,12 +25,14 @@ export default {
 #app {
   display: grid;
   grid-template-areas:
-    "h h h"
-    "m m m"
-    "f f f"; // TODO - redundant?
+    "h h h h h"
+    "g1 m m m g2"
+    "f f f f f"; // TODO - redundant?
 }
 
-.app-container {
+.page-container {
+  min-width: 368px;
+  max-width: 1272px;
   grid-area: m;
 }
 </style>

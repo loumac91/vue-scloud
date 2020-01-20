@@ -60,3 +60,23 @@ export const fakeApiResponse = {
   video_url: null,
   download_url: null
 };
+
+export const fakeTransformedData = {
+  artworkUrl: "https://i1.sndcdn.com/artworks-000147293574-4r6s7h-t500x500.jpg",
+  duration: 430668,
+  id: 47186198,
+  liked: false,
+  likesCount: 179,
+  permalinkUrl:
+    "https://soundcloud.com/cartoon-theory/cartoon-1-1-theory-wizardry",
+  playbackCount: 0,
+  streamUrl:
+    "https://api.soundcloud.com/tracks/47186198/stream?d02c42795f3bcac39f84eee0ae384b00",
+  streamable: true,
+  title:
+    "Cartoon Theory - Planet Geisha - Wizardry Mind (Ft TRAVIS ORBIN & PLINI)",
+  userId: 2492274,
+  userPermalinkUrl: "http://soundcloud.com/cartoon-theory",
+  username: "Cartoon Theory",
+  waveformUrl: "https://wave.sndcdn.com/eGq9OOJJPWH0_m.json"
+};

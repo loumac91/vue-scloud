@@ -1,6 +1,6 @@
 import { FETCH_TRACKS } from "@/store/action.types";
 import { SET_TRACKS } from "@/store/mutation.types";
-import { fetchTracks } from "@/services/trackService";
+import { fetchTracks } from "@/services";
 
 const state = {
   currentTrack: {},

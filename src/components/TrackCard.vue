@@ -1,9 +1,10 @@
 <template>
-  <article class="card">
-    <div class="track-card__image"></div>
+  <li class="track-card">
+    <div class="track-card__image">
+      <img :src="track.artworkUrl" />
+    </div>
     <div class="track-card__content"></div>
-    <p>Card</p>
-  </article>
+  </li>
 </template>
 
 <script>
@@ -21,4 +22,19 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.track-card {
+  display: flex;
+  flex-direction: column;
+
+  @media (min-width: 768px) {
+    width: 50%;
+  }
+
+  &__image {
+    position: relative;
+    height: auto;
+    background: #fff;
+  }
+}
+</style>

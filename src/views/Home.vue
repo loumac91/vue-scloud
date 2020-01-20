@@ -5,28 +5,21 @@
     <div class="card">
       <h1>Hello Vorld</h1>
     </div>
-    <TrackCard :track="track" />
+    <TrackGrid />
   </div>
 </template>
 
 <script>
-import TrackCard from "@/components/TrackCard.vue";
-
-import { fakeApiResponse } from "@/fakeData";
+import TrackGrid from "@/components/TrackGrid.vue";
 
 export default {
   name: "Home",
   components: {
-    TrackCard
-  },
-  data() {
-    return {
-      track: fakeApiResponse
-    };
+    TrackGrid
   },
   methods: {
     handleClick() {
-      this.$store.dispatch("FETCH_TRACKS", "travis orbin");
+      this.$store.dispatch("FETCH_TRACKS", "TRAVIS ORBIN");
     }
   }
 };
