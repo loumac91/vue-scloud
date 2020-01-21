@@ -7,7 +7,11 @@ const state = {
   tracks: []
 };
 
-const getters = {};
+const getters = {
+  getTracks(state) {
+    return state.tracks;
+  }
+};
 
 const actions = {
   [FETCH_TRACKS]: async function({ commit }, query) {

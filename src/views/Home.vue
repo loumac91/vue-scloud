@@ -1,15 +1,15 @@
 <template>
   <div>
     <h1>Home</h1>
-    <button @click="handleClick">getTracks</button>
     <div class="card">
       <h1>Hello Vorld</h1>
     </div>
-    <TrackGrid />
+    <TrackGrid :tracks="getTracks" />
   </div>
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 import TrackGrid from "@/components/TrackGrid.vue";
 
 export default {
@@ -17,10 +17,8 @@ export default {
   components: {
     TrackGrid
   },
-  methods: {
-    handleClick() {
-      this.$store.dispatch("FETCH_TRACKS", "TRAVIS ORBIN");
-    }
+  computed: {
+    ...mapGetters(["getTracks"])
   }
 };
 </script>

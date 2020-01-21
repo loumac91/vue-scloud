@@ -3,7 +3,10 @@
     <div class="track-card__image">
       <img :src="track.artworkUrl" />
     </div>
-    <div class="track-card__content"></div>
+    <div class="track-card__content">
+      <h1>HEADER</h1>
+      <p>Lorem ipsum</p>
+    </div>
   </li>
 </template>
 
@@ -15,9 +18,6 @@ export default {
       type: Object,
       required: true
     }
-  },
-  mounted() {
-    console.log("t", this.track);
   }
 };
 </script>
@@ -26,6 +26,7 @@ export default {
 .track-card {
   display: flex;
   flex-direction: column;
+  align-items: center;
 
   @media (min-width: 768px) {
     width: 50%;
@@ -34,7 +35,10 @@ export default {
   &__image {
     position: relative;
     height: auto;
-    background: #fff;
+  }
+
+  &__content {
+    color: #fff;
   }
 }
 </style>

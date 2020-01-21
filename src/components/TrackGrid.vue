@@ -1,6 +1,6 @@
 <template>
   <ul class="track-grid">
-    <template v-for="(track, index) in fakeTracks">
+    <template v-for="(track, index) in tracks">
       <TrackCard :key="index" :track="track" />
     </template>
   </ul>
@@ -9,27 +9,16 @@
 <script>
 import TrackCard from "@/components/TrackCard.vue";
 
-import { fakeTransformedData } from "@/fakeData";
-
 export default {
   name: "TrackGrid",
   components: {
     TrackCard
   },
-  // props: {
-  //   tracks: {
-  //     type: Array,
-  //     required: true
-  //   }
-  // },
-  data() {
-    return {
-      fakeTracks: [
-        fakeTransformedData,
-        fakeTransformedData,
-        fakeTransformedData
-      ]
-    };
+  props: {
+    tracks: {
+      type: Array,
+      required: true
+    }
   }
 };
 </script>
