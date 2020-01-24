@@ -27,7 +27,7 @@ export default {
 .track-grid {
   display: flex;
   flex-wrap: wrap;
-  list-style: none; // no dot or number etc.
-  margin: 0;
+  list-style: none;
+  justify-content: space-around;
 }
 </style>

@@ -1,11 +1,11 @@
 <template>
-  <div>
+  <main class="page-container">
     <h1>Home</h1>
     <div class="card">
       <h1>Hello Vorld</h1>
     </div>
     <TrackGrid :tracks="getTracks" />
-  </div>
+  </main>
 </template>
 
 <script>

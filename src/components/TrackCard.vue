@@ -4,8 +4,8 @@
       <img :src="track.artworkUrl" />
     </div>
     <div class="track-card__content">
-      <h1>HEADER</h1>
-      <p>Lorem ipsum</p>
+      <h1>{{ track.title }}</h1>
+      <p>{{ track.username }}</p>
     </div>
   </li>
 </template>
@@ -26,15 +26,21 @@ export default {
 .track-card {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  border-radius: 30px;
+  flex: 0 1 calc(25% - 1em);
 
-  @media (min-width: 768px) {
-    width: 50%;
+  @media (max-width: 768px) {
+    flex: 0 1 calc(50% - 1em);
   }
 
   &__image {
     position: relative;
-    height: auto;
+
+    & > img {
+      max-width: 100%;
+      border: 0;
+      vertical-align: middle;
+    }
   }
 
   &__content {

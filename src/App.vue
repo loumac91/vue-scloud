@@ -1,9 +1,7 @@
 <template>
   <div id="app">
     <Header />
-    <main class="page-container">
-      <router-view />
-    </main>
+    <router-view />
     <Player />
   </div>
 </template>
@@ -34,5 +32,6 @@ export default {
   min-width: 368px;
   max-width: 1272px;
   grid-area: m;
+  justify-self: center;
 }
 </style>

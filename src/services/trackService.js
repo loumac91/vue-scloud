@@ -7,7 +7,8 @@ export async function fetchTracks(query) {
     {
       url: TRACKS_URL,
       params: {
-        q: query
+        q: query,
+        limit: 20
       }
     },
     transformTracks
