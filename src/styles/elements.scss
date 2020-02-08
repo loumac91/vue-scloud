@@ -20,7 +20,7 @@ html {
     -webkit-font-smoothing: antialiased; // [3]
     font-size: $root-font-size;          // [4]
     cursor: default;
-    background-color: $black;
+    background-color: $base-card-color;
 }
 
 body {
