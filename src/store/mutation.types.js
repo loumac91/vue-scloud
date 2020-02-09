@@ -4,5 +4,14 @@ export const SET_SHOW_PLAYER = "SET_SHOW_PLAYER";
 // LOADING
 export const SET_ACTION_STATE = "SET_ACTION_STATE";
 
+// PLAYER
+export const SET_PLAYER = "SET_PLAYER";
+export const RESET_PLAYER = "RESET_PLAYER";
+export const SET_PLAYING = "SET_PLAYING";
+export const SET_VOLUME = "SET_VOLUME";
+export const SET_CURRENT_PROGRESS = "SET_CURRENT_PROGRESS";
+export const SET_CURRENT_TIME = "SET_CURRENT_TIME";
+export const SET_TRACK_DURATION = "SET_TRACK_DURATION";
+
 // TRACKS
 export const SET_TRACKS = "SET_TRACKS";

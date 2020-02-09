@@ -2,18 +2,20 @@
   <li class="track-card drop-shadow-bottom-right">
     <div class="track-card__image">
       <img :src="track.artworkUrl" />
+      <div class="track-card__overlay-container">
+        <i :class="['fas', 'fa-lg', getIcon]"></i>
+      </div>
     </div>
     <div class="track-card__content">
       <p class="track-card__title">{{ track.title }}</p>
       <p class="track-card__username">{{ track.username }}</p>
     </div>
-    <div class="track-card__controls">
-      <button class="btn btn-icon"><i class="fas fa-play"></i></button>
-    </div>
   </li>
 </template>
 
 <script>
+import { mapState } from "vuex";
+
 export default {
   name: "TrackCard",
   props: {
@@ -23,8 +25,20 @@ export default {
     }
   },
   computed: {
-    isPlaying() {
-      return true;
+    ...mapState(["playing"]),
+    getIcon() {
+      return {
+        "fa-play": !this.playing,
+        "fa-pause": this.playing
+      };
+    }
+  },
+  methods: {
+    handleClick() {
+      this.$store.dispatch(
+        "LOAD_PLAYER",
+        "https://soundbible.com/mp3/meadowlark_daniel-simion.mp3"
+      );
     }
   }
 };
@@ -40,6 +54,14 @@ export default {
   flex: 0 1 calc(25% - 1em);
   background-color: $base-card-color;
   margin-bottom: 16px;
+
+  &:hover img {
+    opacity: 0.4;
+  }
+
+  &:hover &__overlay-container {
+    opacity: 1;
+  }
 
   @media (max-width: 768px) {
     flex: 0 1 calc(50% - 1em);
@@ -61,6 +83,15 @@ export default {
   &__content {
     padding: 8px;
     color: black;
+  }
+
+  &__overlay-container {
+    transition: 0.5s ease;
+    opacity: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
   }
 }
 

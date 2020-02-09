@@ -12,4 +12,4 @@ export const WAVEFORM_JSON_HOST = "wis.sndcdn.com";
 export const PARAM_CLIENT_ID = "client_id";
 
 // STORE
-export const INITIAL_SEARCH = "travis orbin";
+export const INITIAL_SEARCH = "max cooper";
