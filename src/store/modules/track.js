@@ -3,7 +3,6 @@ import { SET_TRACKS } from "@/store/mutation.types";
 import { fetchTracks } from "@/services";
 
 const state = {
-  currentTrack: {},
   tracks: []
 };
 

@@ -1,5 +1,5 @@
 <template>
-  <li class="track-card drop-shadow-bottom-right">
+  <li class="track-card drop-shadow-bottom-right" @click="handleClick">
     <div class="track-card__image">
       <img :src="track.artworkUrl" />
       <div class="track-card__overlay-container">
@@ -14,7 +14,8 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapGetters } from "vuex";
+import { LOAD_PLAYER } from "@/store/action.types";
 
 export default {
   name: "TrackCard",
@@ -25,20 +26,19 @@ export default {
     }
   },
   computed: {
-    ...mapState(["playing"]),
+    ...mapGetters({
+      isPlaying: "getCurrentTrackPlaying"
+    }),
     getIcon() {
       return {
-        "fa-play": !this.playing,
-        "fa-pause": this.playing
+        "fa-play": !this.isPlaying,
+        "fa-pause": this.isPlaying
       };
     }
   },
   methods: {
     handleClick() {
-      this.$store.dispatch(
-        "LOAD_PLAYER",
-        "https://soundbible.com/mp3/meadowlark_daniel-simion.mp3"
-      );
+      this.$store.dispatch(LOAD_PLAYER, this.track);
     }
   }
 };

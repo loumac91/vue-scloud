@@ -11,6 +11,7 @@ export function transformTrack(trackData) {
     ),
     duration: trackData.duration,
     id: trackData.id,
+    isPlaying: false,
     liked: !!trackData.user_favorite, // forces boolean
     likesCount: trackData.favoritings_count || trackData.likes_count || 0,
     permalinkUrl: trackData.permalink_url,

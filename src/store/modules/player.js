@@ -2,15 +2,19 @@ import { LOAD_PLAYER, UPDATE_PLAYER_TIMES } from "@/store/action.types";
 import {
   SET_PLAYER,
   RESET_PLAYER,
+  SET_CURRENT_TRACK,
+  SET_CURRENT_TRACK_PLAYING,
   SET_PLAYING,
   SET_VOLUME,
   SET_CURRENT_PROGRESS,
   SET_CURRENT_TIME,
   SET_TRACK_DURATION
 } from "@/store/mutation.types";
+import { initialiseAudio } from "@/services";
 
 const state = {
   audio: null,
+  currentTrack: null,
   playing: false,
   volume: 5,
   currentProgress: 0,
@@ -18,15 +22,20 @@ const state = {
   trackDuration: 0
 };
 
-const getters = {};
+const getters = {
+  getCurrentTrackPlaying(state) {
+    return !!state.currentTrack && state.currentTrack.isPlaying;
+  }
+};
 
 const actions = {
-  [LOAD_PLAYER]: function({ commit, dispatch, state }, url) {
+  [LOAD_PLAYER]: function({ commit, dispatch, state }, track) {
     if (state.playing) {
+      commit(SET_CURRENT_TRACK, null);
       commit(RESET_PLAYER);
     }
 
-    const audio = initialiseAudio(commit, dispatch, url);
+    const audio = initialiseAudio(commit, dispatch, track);
     commit(SET_PLAYER, audio);
 
     audio.play();
@@ -53,8 +62,14 @@ const mutations = {
     state.audio.load();
     state.audio = null;
   },
+  [SET_CURRENT_TRACK]: function(state, track) {
+    state.currentTrack = track;
+  },
   [SET_PLAYING]: function(state, playing) {
     state.playing = playing;
+  },
+  [SET_CURRENT_TRACK_PLAYING]: function(state, isPlaying) {
+    state.currentTrack.isPlaying = isPlaying;
   },
   [SET_VOLUME]: function(state, volume) {
     state.volume = volume;
@@ -66,28 +81,6 @@ const mutations = {
     state.currentTime = currentTime;
   }
 };
-
-function initialiseAudio(commit, dispatch, url) {
-  let audio = new Audio(url);
-  audio.addEventListener("ended", () => {
-    commit(SET_PLAYING, false);
-    commit(SET_PLAYER, null);
-  });
-  audio.addEventListener("pause", () => commit(SET_PLAYING, false));
-  audio.addEventListener("playing", () => commit(SET_PLAYING, true));
-  audio.addEventListener("volumechange", () =>
-    commit(SET_VOLUME, getVolume(audio))
-  );
-  audio.addEventListener("timeupdate", e =>
-    dispatch(UPDATE_PLAYER_TIMES, e.target)
-  );
-
-  return audio;
-}
-
-function getVolume(audio) {
-  return Math.floor(audio.volume * 100);
-}
 
 export default {
   state,
