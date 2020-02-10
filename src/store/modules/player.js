@@ -1,13 +1,14 @@
 import {
   LOAD_PLAYER,
+  RESET_PLAYER,
+  SET_PLAYER_PLAYING,
   SET_PLAYER_PAUSED,
   UPDATE_PLAYER_TIMES
 } from "@/store/action.types";
-import { UNINITIALISED, PLAYING, PAUSED, ENDED } from "@/constants";
+import { UNINITIALISED } from "@/constants";
 import {
   SET_PLAYER,
   SET_PLAYER_STATE,
-  RESET_PLAYER,
   SET_CURRENT_TRACK,
   SET_CURRENT_TRACK_PLAYING,
   SET_VOLUME,
@@ -32,9 +33,6 @@ const getters = {
   isCurrentTrack(state) {
     return track => !!state.currentTrack && state.currentTrack.id === track.id;
   },
-  getCurrentTrackPlaying(state) {
-    return !!state.currentTrack && state.currentTrack.isPlaying;
-  },
   getPlayerState(state) {
     return state.playerState;
   }
@@ -42,31 +40,28 @@ const getters = {
 
 const actions = {
   [LOAD_PLAYER]: function({ commit, dispatch, state }, track) {
-    if (state.playing) {
+    if (state.playing || state.currentTrack) {
       commit(SET_CURRENT_TRACK, null);
-      commit(RESET_PLAYER);
+      dispatch(RESET_PLAYER);
     }
 
     const audio = initialiseAudio(commit, dispatch, track);
     commit(SET_PLAYER, audio);
 
-    audio.play(); // sets the current track
+    dispatch(SET_PLAYER_PLAYING);
   },
-  [SET_PLAYER_STATE]: function({commit, state}, playerState) {
-    {
-      switch (playerState) {
-        case PLAYING:
-          state.audio.pause();
-          break;
-        case PAUSED:
-          state.audio.play();
-          break;
-      }
+  [RESET_PLAYER]: function({ commit, state }) {
+    state.audio.pause();
+    state.audio.removeAttribute("src");
+    state.audio.load();
 
-      commit(SET_PLAYER_STATE, playerState);
-  }
+    commit(SET_PLAYER, null);
+  },
+  [SET_PLAYER_PLAYING]: function({ state }) {
+    state.audio.play(); // sets the current track
+  },
   [SET_PLAYER_PAUSED]: function({ state }) {
-    state.audio.pause(); // event driven mutations update player state
+    state.audio.pause();
   },
   [UPDATE_PLAYER_TIMES]: function(
     { commit },
@@ -86,13 +81,6 @@ const mutations = {
   },
   [SET_PLAYER_STATE]: function(state, playerState) {
     state.playerState = playerState;
-  },
-  [RESET_PLAYER]: function() {
-    // TODO MOVE THE BUSINESS LOGIC INTO THE ACTION
-    state.audio.pause();
-    state.audio.removeAttribute("src");
-    state.audio.load();
-    state.audio = null;
   },
   [SET_CURRENT_TRACK]: function(state, track) {
     state.currentTrack = track;

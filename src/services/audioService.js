@@ -9,11 +9,10 @@ import {
   SET_VOLUME
 } from "@/store/mutation.types";
 
-// TODO - REVIEW STATE MANIPULATION OF PLAYER
-
 export function initialiseAudio(commit, dispatch, track) {
   let audio = new Audio(track.streamUrl);
   audio.addEventListener("ended", () => {
+    commit(SET_CURRENT_TRACK_PLAYING, false);
     commit(SET_CURRENT_TRACK, null);
     commit(SET_PLAYER_STATE, ENDED);
     commit(SET_PLAYER, null);

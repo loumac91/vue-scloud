@@ -15,8 +15,12 @@
 
 <script>
 import { mapGetters } from "vuex";
-import { LOAD_PLAYER, SET_PLAYER_PAUSED } from "@/store/action.types";
-import { PLAYING, PAUSED, ENDED } from "@/constants";
+import {
+  LOAD_PLAYER,
+  SET_PLAYER_PLAYING,
+  SET_PLAYER_PAUSED
+} from "@/store/action.types";
+import { PLAYING, PAUSED } from "@/constants";
 
 export default {
   name: "TrackCard",
@@ -28,40 +32,37 @@ export default {
   },
   computed: {
     ...mapGetters({
-      isPlaying: "getCurrentTrackPlaying",
       playerState: "getPlayerState"
     }),
     isCurrentTrack() {
       return this.$store.getters.isCurrentTrack(this.track);
     },
-    getPlaying() {
+    isPlaying() {
       return this.playerState === PLAYING;
     },
     isPaused() {
       return this.playerState === PAUSED;
     },
-    isEnded() {
-      return this.playerState === ENDED;
-    },
     getIcon() {
+      const showPlay =
+        !this.isCurrentTrack || (this.isCurrentTrack && !this.isPlaying);
+      const showPause = this.isCurrentTrack && this.isPlaying;
+
       return {
-        "fa-play": !this.isPlaying,
-        "fa-pause": this.isPlaying
+        "fa-play": showPlay,
+        "fa-pause": showPause
       };
     }
   },
   methods: {
     handleClick() {
-      if (this.isPlaying) {
+      if (this.isCurrentTrack && this.isPlaying) {
         this.$store.dispatch(SET_PLAYER_PAUSED);
         return;
+      } else if (this.isCurrentTrack && this.isPaused) {
+        this.$store.dispatch(SET_PLAYER_PLAYING);
+        return;
       }
-
-      if (this.isCurrentTrack && this.isPaused) {
-        this.$store.dispatch("SET_PLAYER");
-      }
-
-      // If the song has already been loaded then don't reload the song
 
       this.$store.dispatch(LOAD_PLAYER, this.track);
     }
