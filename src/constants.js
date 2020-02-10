@@ -11,5 +11,11 @@ export const WAVEFORM_JSON_HOST = "wis.sndcdn.com";
 // PARAMS
 export const PARAM_CLIENT_ID = "client_id";
 
+// PLAYER STATE
+export const UNINITIALISED = "UNINITIALISED";
+export const PLAYING = "PLAYING";
+export const PAUSED = "PAUSED";
+export const ENDED = "ENDED";
+
 // STORE
 export const INITIAL_SEARCH = "max cooper";

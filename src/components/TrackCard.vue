@@ -2,7 +2,7 @@
   <li class="track-card drop-shadow-bottom-right" @click="handleClick">
     <div class="track-card__image">
       <img :src="track.artworkUrl" />
-      <div class="track-card__overlay-container">
+      <div v-if="track.streamable" class="track-card__overlay-container">
         <i :class="['fas', 'fa-lg', getIcon]"></i>
       </div>
     </div>
@@ -15,7 +15,8 @@
 
 <script>
 import { mapGetters } from "vuex";
-import { LOAD_PLAYER } from "@/store/action.types";
+import { LOAD_PLAYER, SET_PLAYER_PAUSED } from "@/store/action.types";
+import { PLAYING, PAUSED, ENDED } from "@/constants";
 
 export default {
   name: "TrackCard",
@@ -27,8 +28,21 @@ export default {
   },
   computed: {
     ...mapGetters({
-      isPlaying: "getCurrentTrackPlaying"
+      isPlaying: "getCurrentTrackPlaying",
+      playerState: "getPlayerState"
     }),
+    isCurrentTrack() {
+      return this.$store.getters.isCurrentTrack(this.track);
+    },
+    getPlaying() {
+      return this.playerState === PLAYING;
+    },
+    isPaused() {
+      return this.playerState === PAUSED;
+    },
+    isEnded() {
+      return this.playerState === ENDED;
+    },
     getIcon() {
       return {
         "fa-play": !this.isPlaying,
@@ -38,6 +52,17 @@ export default {
   },
   methods: {
     handleClick() {
+      if (this.isPlaying) {
+        this.$store.dispatch(SET_PLAYER_PAUSED);
+        return;
+      }
+
+      if (this.isCurrentTrack && this.isPaused) {
+        this.$store.dispatch("SET_PLAYER");
+      }
+
+      // If the song has already been loaded then don't reload the song
+
       this.$store.dispatch(LOAD_PLAYER, this.track);
     }
   }
@@ -72,7 +97,6 @@ export default {
     height: auto;
 
     & > img {
-      // border: 0;
       border-radius: 16px 16px 0 0;
       height: auto;
       max-width: 100%;
