@@ -1,9 +1,9 @@
 <template>
-  <li class="track-card drop-shadow-bottom-right" @click="handleClick">
-    <div class="track-card__image">
+  <li class="track-card drop-shadow--bottom-right">
+    <div class="track-card__image" @click="handleClick">
       <img :src="track.artworkUrl" />
       <div v-if="track.streamable" class="track-card__overlay-container">
-        <i :class="['fas', 'fa-lg', getIcon]"></i>
+        <i :class="['fas fa-lg', getIcon]"></i>
       </div>
     </div>
     <div class="track-card__content">
@@ -56,12 +56,11 @@ export default {
   },
   methods: {
     handleClick() {
+      // TODO debounce
       if (this.isCurrentTrack && this.isPlaying) {
-        this.$store.dispatch(SET_PLAYER_PAUSED);
-        return;
+        return this.$store.dispatch(SET_PLAYER_PAUSED);
       } else if (this.isCurrentTrack && this.isPaused) {
-        this.$store.dispatch(SET_PLAYER_PLAYING);
-        return;
+        return this.$store.dispatch(SET_PLAYER_PLAYING);
       }
 
       this.$store.dispatch(LOAD_PLAYER, this.track);
@@ -81,14 +80,6 @@ export default {
   background-color: $base-card-color;
   margin-bottom: 16px;
 
-  &:hover img {
-    opacity: 0.4;
-  }
-
-  &:hover &__overlay-container {
-    opacity: 1;
-  }
-
   @media (max-width: 768px) {
     flex: 0 1 calc(50% - 1em);
   }
@@ -97,11 +88,29 @@ export default {
     position: relative;
     height: auto;
 
+    &:hover img {
+      opacity: 0.4;
+      cursor: pointer;
+    }
+
+    &:hover .track-card__overlay-container {
+      opacity: 1;
+    }
+
     & > img {
       border-radius: 16px 16px 0 0;
       height: auto;
       max-width: 100%;
       vertical-align: middle;
+    }
+
+    > .track-card__overlay-container {
+      transition: 0.5s ease;
+      opacity: 0;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
     }
   }
 
@@ -109,18 +118,9 @@ export default {
     padding: 8px;
     color: black;
   }
-
-  &__overlay-container {
-    transition: 0.5s ease;
-    opacity: 0;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-  }
 }
 
-.drop-shadow-bottom-right {
+.drop-shadow--bottom-right {
   filter: drop-shadow(10px 10px 10px #a6abbd);
 }
 </style>
