@@ -3,7 +3,8 @@ import {
   RESET_PLAYER,
   SET_PLAYER_PLAYING,
   SET_PLAYER_PAUSED,
-  UPDATE_PLAYER_TIMES
+  UPDATE_PLAYER_TIMES,
+  SET_PLAYER_CURRENT_TIME
 } from "@/store/action.types";
 import { UNINITIALISED } from "@/constants";
 import {
@@ -30,11 +31,20 @@ const state = {
 };
 
 const getters = {
+  isInitialised(state) {
+    return state.playerState != UNINITIALISED;
+  },
   isCurrentTrack(state) {
     return track => !!state.currentTrack && state.currentTrack.id === track.id;
   },
   getPlayerState(state) {
     return state.playerState;
+  },
+  getBufferedPercent(state) {
+    return `${(state.currentProgress / state.trackDuration) * 100 || 0}%`;
+  },
+  getPlayedPercent(state) {
+    return `${(state.currentTime / state.trackDuration) * 100 || 0}%`;
   }
 };
 
@@ -72,6 +82,9 @@ const actions = {
     commit(SET_CURRENT_PROGRESS, bufferedTime);
     commit(SET_CURRENT_TIME, currentTime);
     commit(SET_TRACK_DURATION, duration);
+  },
+  [SET_PLAYER_CURRENT_TIME]: function({ state }, time) {
+    state.audio.currentTime = time;
   }
 };
 

@@ -42,7 +42,6 @@ export default {
   min-width: 368px;
   max-width: 1272px;
   grid-area: m;
-  justify-self: center;
 }
 
 .base-fixed-element {

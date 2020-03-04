@@ -1,11 +1,12 @@
 <template>
-  <li class="track-card drop-shadow--bottom-right">
+  <li class="track-card">
     <div class="track-card__image" @click="handleClick">
       <img :src="track.artworkUrl" />
       <div v-if="track.streamable" class="track-card__overlay-container">
         <i :class="['fas fa-lg', getIcon]"></i>
       </div>
     </div>
+    <PlayerTimeline v-if="isCurrentTrack" />
     <div class="track-card__content">
       <p class="track-card__title">{{ track.title }}</p>
       <p class="track-card__username">{{ track.username }}</p>
@@ -15,6 +16,7 @@
 
 <script>
 import { mapGetters } from "vuex";
+import PlayerTimeline from "@/components/PlayerTimeline.vue";
 import {
   LOAD_PLAYER,
   SET_PLAYER_PLAYING,
@@ -24,6 +26,9 @@ import { PLAYING, PAUSED } from "@/constants";
 
 export default {
   name: "TrackCard",
+  components: {
+    PlayerTimeline
+  },
   props: {
     track: {
       type: Object,
@@ -75,14 +80,11 @@ export default {
 .track-card {
   display: flex;
   flex-direction: column;
-  border-radius: 16px;
-  flex: 0 1 calc(25% - 1em);
+  border-radius: map-get($radius, heavy);
   background-color: $base-card-color;
-  margin-bottom: 16px;
 
-  @media (max-width: 768px) {
-    flex: 0 1 calc(50% - 1em);
-  }
+  background: linear-gradient(145deg, #d4d5d9, #fdfeff);
+  box-shadow: 20px 20px 60px #c9c9cd, -20px -20px 60px #ffffff;
 
   &__image {
     position: relative;
@@ -90,15 +92,19 @@ export default {
 
     &:hover img {
       opacity: 0.4;
-      cursor: pointer;
     }
 
     &:hover .track-card__overlay-container {
       opacity: 1;
     }
 
+    &:hover img,
+    .track-card__overlay-container {
+      cursor: pointer;
+    }
+
     & > img {
-      border-radius: 16px 16px 0 0;
+      border-radius: map-get($radius, heavy) map-get($radius, heavy) 0 0;
       height: auto;
       max-width: 100%;
       vertical-align: middle;
@@ -118,9 +124,5 @@ export default {
     padding: 8px;
     color: black;
   }
-}
-
-.drop-shadow--bottom-right {
-  filter: drop-shadow(10px 10px 10px #a6abbd);
 }
 </style>

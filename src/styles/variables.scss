@@ -12,7 +12,8 @@ $base-element-height: 70px;
 
 $radius: (
   base: 8px,
-  heavy: 12px
+  medium: 12px,
+  heavy: 16px
 ) !default;
 
 $breakpoints: (
@@ -37,4 +38,10 @@ $dirty-white: #E6E9E9;
 $white-green: #B6C0B3;
 
 // card vars
-$base-card-color: #ECEDF1
+$base-card-color: #cdcfda;
+$min-card-width: 200px;
+
+// player
+$player-timeline-color-base: #B8B6C6;
+$player-timeline-color-buffer: #A69DB1;
+$player-timeline-color-play: #886B82;
