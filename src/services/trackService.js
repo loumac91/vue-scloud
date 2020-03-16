@@ -1,4 +1,4 @@
-import { TRACKS_URL } from "@/constants";
+import { TRACKS_URL, TRACK_FETCH_LIMIT } from "@/constants";
 import { dispatchRequestWithTransform } from "@/services/baseService";
 import { transformTrack } from "@/utils/transform";
 
@@ -8,7 +8,7 @@ export async function fetchTracks(query) {
       url: TRACKS_URL,
       params: {
         q: query,
-        limit: 20
+        limit: TRACK_FETCH_LIMIT
       }
     },
     transformTracks

@@ -1,8 +1,9 @@
 <template>
   <div class="player-timeline" @click="handleClick">
     <div class="player-timeline__buffer" :style="getBufferedCss"></div>
-    <div class="player-timeline__played" :style="getPlayedCss"></div></div
-></template>
+    <div class="player-timeline__played" :style="getPlayedCss"></div>
+  </div>
+</template>
 
 <script>
 import { mapState, mapGetters } from "vuex";

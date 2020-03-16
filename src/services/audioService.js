@@ -1,5 +1,5 @@
 import { UPDATE_PLAYER_TIMES } from "@/store/action.types";
-import { PLAYING, PAUSED, ENDED } from "@/constants";
+import { PLAYER_DEFAULT_VOLUME, PLAYING, PAUSED, ENDED } from "@/constants";
 import {
   SET_PLAYER,
   SET_PLAYER_STATE,
@@ -8,6 +8,7 @@ import {
   SET_CURRENT_TRACK_PLAYING,
   SET_VOLUME
 } from "@/store/mutation.types";
+import { formatReadVolume, formatSetVolume } from "@/utils/formatting";
 
 export function initialiseAudio(commit, dispatch, track) {
   let audio = new Audio(track.streamUrl);
@@ -31,17 +32,15 @@ export function initialiseAudio(commit, dispatch, track) {
     commit(SET_CURRENT_TRACK_PLAYING, true);
   });
 
-  audio.addEventListener("volumechange", () =>
-    commit(SET_VOLUME, getVolume(audio))
-  );
+  audio.addEventListener("volumechange", () => {
+    commit(SET_VOLUME, formatReadVolume(audio.volume));
+  });
 
   audio.addEventListener("timeupdate", e =>
     dispatch(UPDATE_PLAYER_TIMES, e.target)
   );
 
-  return audio;
-}
+  audio.volume = formatSetVolume(PLAYER_DEFAULT_VOLUME);
 
-function getVolume(audio) {
-  return Math.floor(audio.volume * 100);
+  return audio;
 }

@@ -7,9 +7,15 @@ export const IMAGE_DEFAULT_SIZE = "large.jpg";
 export const IMAGE_XLARGE_SIZE = "t500x500.jpg";
 export const WAVEFORM_IMAGE_HOST = "w1.sndcdn.com";
 export const WAVEFORM_JSON_HOST = "wis.sndcdn.com";
+export const TRACK_FETCH_LIMIT = 50;
 
 // PARAMS
 export const PARAM_CLIENT_ID = "client_id";
+
+// PLAYER
+export const PLAYER_MAX_VOLUME = 100;
+export const PLAYER_VOLUME_INCREMENT = 5;
+export const PLAYER_DEFAULT_VOLUME = 50;
 
 // PLAYER STATE
 export const UNINITIALISED = "UNINITIALISED";

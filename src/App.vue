@@ -40,7 +40,6 @@ export default {
 
 .page-container {
   min-width: 368px;
-  max-width: 1272px;
   grid-area: m;
 }
 
@@ -61,11 +60,5 @@ export default {
   left: 0;
   bottom: 0;
   z-index: 2;
-
-  // transform: translateZ(0);
-  // animation-name: show-footer;
-  // animation-iteration-count: 1;
-  // animation-timing-function: ease-in-out;
-  // animation-duration: 0.8s;
 }
 </style>

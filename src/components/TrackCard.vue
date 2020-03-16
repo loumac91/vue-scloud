@@ -3,7 +3,7 @@
     <div class="track-card__image" @click="handleClick">
       <img :src="track.artworkUrl" />
       <div v-if="track.streamable" class="track-card__overlay-container">
-        <i :class="['fas fa-lg', getIcon]"></i>
+        <Icon :type="getPlayingIcon" :large="true" :colour="'black'" />
       </div>
     </div>
     <PlayerTimeline v-if="isCurrentTrack" />
@@ -16,18 +16,19 @@
 
 <script>
 import { mapGetters } from "vuex";
+import Icon from "@/components/Icon.vue";
 import PlayerTimeline from "@/components/PlayerTimeline.vue";
 import {
   LOAD_PLAYER,
   SET_PLAYER_PLAYING,
   SET_PLAYER_PAUSED
 } from "@/store/action.types";
-import { PLAYING, PAUSED } from "@/constants";
 
 export default {
   name: "TrackCard",
   components: {
-    PlayerTimeline
+    PlayerTimeline,
+    Icon
   },
   props: {
     track: {
@@ -36,35 +37,23 @@ export default {
     }
   },
   computed: {
-    ...mapGetters({
-      playerState: "getPlayerState"
-    }),
+    ...mapGetters(["getIsPlaying", "getIsPaused"]),
     isCurrentTrack() {
       return this.$store.getters.isCurrentTrack(this.track);
     },
-    isPlaying() {
-      return this.playerState === PLAYING;
-    },
-    isPaused() {
-      return this.playerState === PAUSED;
-    },
-    getIcon() {
+    getPlayingIcon() {
       const showPlay =
-        !this.isCurrentTrack || (this.isCurrentTrack && !this.isPlaying);
-      const showPause = this.isCurrentTrack && this.isPlaying;
+        !this.isCurrentTrack || (this.isCurrentTrack && !this.getIsPlaying);
+      const showPause = this.isCurrentTrack && this.getIsPlaying;
 
-      return {
-        "fa-play": showPlay,
-        "fa-pause": showPause
-      };
+      return showPlay ? "Play" : showPause ? "Pause" : "";
     }
   },
   methods: {
     handleClick() {
-      // TODO debounce
-      if (this.isCurrentTrack && this.isPlaying) {
+      if (this.isCurrentTrack && this.getIsPlaying) {
         return this.$store.dispatch(SET_PLAYER_PAUSED);
-      } else if (this.isCurrentTrack && this.isPaused) {
+      } else if (this.isCurrentTrack && this.getIsPaused) {
         return this.$store.dispatch(SET_PLAYER_PLAYING);
       }
 
@@ -82,7 +71,6 @@ export default {
   flex-direction: column;
   border-radius: map-get($radius, heavy);
   background-color: $base-card-color;
-
   background: linear-gradient(145deg, #d4d5d9, #fdfeff);
   box-shadow: 20px 20px 60px #c9c9cd, -20px -20px 60px #ffffff;
 
