@@ -77,10 +77,10 @@ const getters = {
 };
 
 const actions = {
-  [LOAD_PLAYER]: function({ commit, dispatch, state }, track) {
-    if (state.playing || state.currentTrack) {
+  [LOAD_PLAYER]: async function({ commit, dispatch, state }, track) {
+    if (state.audio || state.currentTrack) {
       commit(SET_CURRENT_TRACK, null);
-      dispatch(RESET_PLAYER);
+      await dispatch(RESET_PLAYER);
     }
 
     const audio = initialiseAudio(commit, dispatch, track);

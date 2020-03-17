@@ -6,7 +6,7 @@
         <Icon :type="getPlayingIcon" :large="true" :colour="'black'" />
       </div>
     </div>
-    <PlayerTimeline v-if="isCurrentTrack" />
+    <PlayerTimeline v-show="isCurrentTrack" />
     <div class="track-card__content">
       <p class="track-card__title">{{ track.title }}</p>
       <p class="track-card__username">{{ track.username }}</p>
