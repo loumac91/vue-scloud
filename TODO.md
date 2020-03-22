@@ -1,3 +1,8 @@
+https://github.com/tabler/tabler-icons vs fa
+https://uxplanet.org/disneys-motion-principles-in-designing-interface-animations-9ac7707a2b43
+
+---
+
 Player:
 
  - Handle when music stops, go to next track
