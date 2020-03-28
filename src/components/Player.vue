@@ -3,9 +3,21 @@
     <PlayerTimeline />
     <div class="player-controls">
       <div class="player-controls__buttons">
-        <Icon :type="'StepBackward'" @click="handleStepBack" />
-        <Icon :type="getPlayingIcon" @click="handlePlayPause" />
-        <Icon :type="'StepForward'" @click="handleStepForward" />
+        <Icon
+          :type="'StepBackward'"
+          :neumorphic="true"
+          @click="handleStepBack"
+        />
+        <Icon
+          :type="getPlayingIcon"
+          :neumorphic="true"
+          @click="handlePlayPause"
+        />
+        <Icon
+          :type="'StepForward'"
+          :neumorphic="true"
+          @click="handleStepForward"
+        />
       </div>
       <div v-if="getCurrentTrack" class="player-controls__time">
         {{ getCurrentTime }} / {{ getTrackDuration }}
@@ -14,9 +26,9 @@
         {{ trackTitle }}
       </div>
       <div class="player-controls__volume">
-        <Icon :type="'Minus'" @click="decreaseVolume" />
+        <Icon :type="'Minus'" :neumorphic="true" @click="decreaseVolume" />
         {{ getVolume }}
-        <Icon :type="'Plus'" @click="increaseVolume" />
+        <Icon :type="'Plus'" :neumorphic="true" @click="increaseVolume" />
       </div>
     </div>
   </div>

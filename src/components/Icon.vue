@@ -1,5 +1,5 @@
 <template>
-  <button class="btn" v-on="$listeners">
+  <button :class="['btn', getButtonCss]" v-on="$listeners">
     <i :class="['fas', getIcon, getSize, getColour]"></i>
   </button>
 </template>
@@ -16,6 +16,10 @@ export default {
       type: Boolean,
       required: false
     },
+    neumorphic: {
+      type: Boolean,
+      required: false
+    },
     colour: {
       type: String,
       required: false,
@@ -26,6 +30,9 @@ export default {
     }
   },
   computed: {
+    getButtonCss() {
+      return this.neumorphic ? "btn--neumorphic" : "";
+    },
     getIcon() {
       switch (this.type) {
         case "StepBackward":
@@ -58,12 +65,32 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import "@/styles/variables.scss";
+
 .btn {
-  background: none;
+  background: inherit;
   color: inherit;
   border: none;
   padding: 0;
   outline: none;
+
+  &--neumorphic {
+    border-radius: 8px;
+    background: #cdcfda;
+    box-shadow: 11px 11px 23px #c7c9d3, -11px -11px 23px #d3d5e1;
+
+    &:hover {
+      border-radius: 8px;
+      background: linear-gradient(145deg, #dbdde9, #b9bac4);
+      box-shadow: 11px 11px 23px #c7c9d3, -11px -11px 23px #d3d5e1;
+    }
+
+    &:active {
+      border-radius: 8px;
+      background: #cdcfda;
+      box-shadow: inset 11px 11px 23px #c7c9d3, inset -11px -11px 23px #d3d5e1;
+    }
+  }
 
   > i {
     padding: 8px;
