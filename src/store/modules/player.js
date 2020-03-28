@@ -1,6 +1,7 @@
+// import Vue from "vue";
 import {
   LOAD_PLAYER,
-  RESET_PLAYER,
+  STOP_AUDIO,
   SET_PLAYER_PLAYING,
   SET_PLAYER_PAUSED,
   UPDATE_PLAYER_TIMES,
@@ -9,14 +10,13 @@ import {
   INCREASE_PLAYER_VOLUME
 } from "@/store/action.types";
 import {
-  SET_PLAYER,
+  SET_AUDIO,
   SET_PLAYER_STATE,
-  SET_CURRENT_TRACK,
-  SET_CURRENT_TRACK_PLAYING,
   SET_VOLUME,
   SET_CURRENT_PROGRESS,
   SET_CURRENT_TIME,
-  SET_TRACK_DURATION
+  SET_TRACK_DURATION,
+  SET_TITLE
 } from "@/store/mutation.types";
 import { initialiseAudio } from "@/services";
 import {
@@ -27,31 +27,29 @@ import {
 import {
   PLAYER_MAX_VOLUME,
   PLAYER_VOLUME_INCREMENT,
+  PLAYER_DEFAULT_VOLUME,
   UNINITIALISED,
   PLAYING,
-  PAUSED
+  PAUSED,
+  ENDED
 } from "@/constants";
+import { LOAD_NEXT_TRACK, LOAD_PREVIOUS_TRACK } from "../action.types";
 
 const state = {
-  audio: null, // PROBS DONT NEED THIS - USE CLOSURE ON AUDIO SERVICE INSTEAD
-  currentTrack: null,
+  audio: null,
   playing: false,
   playerState: UNINITIALISED,
-  volume: null,
+  volume: PLAYER_DEFAULT_VOLUME, // each audio has it's own volume
+  title: null,
   currentProgress: 0,
   currentTime: 0,
-  trackDuration: 0
+  trackDuration: 0,
+  defaultTimeStamp: "00:00"
 };
 
 const getters = {
   isInitialised(state) {
     return state.playerState != UNINITIALISED;
-  },
-  isCurrentTrack(state) {
-    return track => !!state.currentTrack && state.currentTrack.id === track.id;
-  },
-  getCurrentTrack(state) {
-    return state.currentTrack;
   },
   getIsPlaying(state) {
     return state.playerState == PLAYING;
@@ -63,9 +61,13 @@ const getters = {
     return state.volume;
   },
   getCurrentTime(state) {
+    if (!state.currentTime || Number.isNaN(state.currentTime))
+      return state.defaultTimeStamp;
     return formatTime(state.currentTime);
   },
   getTrackDuration(state) {
+    if (!state.trackDuration || Number.isNaN(state.trackDuration))
+      return state.defaultTimeStamp;
     return formatTime(state.trackDuration);
   },
   getBufferedPercent(state) {
@@ -77,27 +79,26 @@ const getters = {
 };
 
 const actions = {
-  [LOAD_PLAYER]: async function({ commit, dispatch, state }, track) {
-    if (state.audio || state.currentTrack) {
-      commit(SET_CURRENT_TRACK, null);
-      await dispatch(RESET_PLAYER);
+  [LOAD_PLAYER]: async function({ state, commit, dispatch }, track) {
+    commit(SET_TITLE, track.title);
+
+    if (state.audio) {
+      await dispatch(STOP_AUDIO);
     }
 
-    const audio = initialiseAudio(commit, dispatch, track);
-    commit(SET_PLAYER, audio);
-    commit(SET_VOLUME);
+    const audio = initialiseAudio(track);
+    commit(SET_AUDIO, audio);
 
     dispatch(SET_PLAYER_PLAYING);
   },
-  [RESET_PLAYER]: function({ commit, state }) {
+  [STOP_AUDIO]: function({ state }) {
     state.audio.pause();
     state.audio.removeAttribute("src");
     state.audio.load();
-
-    commit(SET_PLAYER, null);
   },
   [SET_PLAYER_PLAYING]: function({ state }) {
-    state.audio.play(); // sets the current track
+    let promise = state.audio.play(); // sets the current track
+    if (promise && promise.catch) promise.catch(() => {}); // stops DOM exceptions
   },
   [SET_PLAYER_PAUSED]: function({ state }) {
     state.audio.pause();
@@ -124,21 +125,29 @@ const actions = {
     let volume = formatReadVolume(state.audio.volume) + PLAYER_VOLUME_INCREMENT;
     if (volume > PLAYER_MAX_VOLUME) return;
     state.audio.volume = formatSetVolume(volume);
+  },
+  [LOAD_NEXT_TRACK]: function({ rootGetters, commit, dispatch }) {
+    const nextTrack = rootGetters["getNextTrack"];
+    if (nextTrack) {
+      dispatch(LOAD_PLAYER, nextTrack);
+    } else {
+      commit(SET_PLAYER_STATE, ENDED);
+    }
+  },
+  [LOAD_PREVIOUS_TRACK]: function({ rootGetters, dispatch }) {
+    const previousTrack = rootGetters["getPreviousTrack"];
+    if (previousTrack) {
+      dispatch(LOAD_PLAYER, previousTrack);
+    }
   }
 };
 
 const mutations = {
-  [SET_PLAYER]: function(state, audio) {
+  [SET_AUDIO]: function(state, audio) {
     state.audio = audio;
   },
   [SET_PLAYER_STATE]: function(state, playerState) {
     state.playerState = playerState;
-  },
-  [SET_CURRENT_TRACK]: function(state, track) {
-    state.currentTrack = track;
-  },
-  [SET_CURRENT_TRACK_PLAYING]: function(state, isPlaying) {
-    state.currentTrack.isPlaying = isPlaying;
   },
   [SET_VOLUME]: function(state, volume) {
     state.volume = volume;
@@ -151,6 +160,9 @@ const mutations = {
   },
   [SET_TRACK_DURATION]: function(state, duration) {
     state.trackDuration = duration;
+  },
+  [SET_TITLE]: function(state, title) {
+    state.title = title;
   }
 };
 

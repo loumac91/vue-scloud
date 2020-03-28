@@ -1,14 +1,27 @@
 import { FETCH_TRACKS } from "@/store/action.types";
-import { SET_TRACKS } from "@/store/mutation.types";
+import { SET_TRACKS, SET_CURRENT_TRACK } from "@/store/mutation.types";
 import { fetchTracks } from "@/services";
 
 const state = {
-  tracks: []
+  tracks: [],
+  currentTrack: null,
+  selectedTracks: []
 };
 
 const getters = {
-  getTracks(state) {
-    return state.tracks;
+  isCurrentTrack(state) {
+    return track => !!state.currentTrack && state.currentTrack.id === track.id;
+  },
+  getCurrentTrack(state) {
+    return state.currentTrack; // bad?
+  },
+  getNextTrack(state) {
+    const currentTrack = state.currentTrack;
+    return state.tracks[state.tracks.indexOf(currentTrack) + 1];
+  },
+  getPreviousTrack(state) {
+    const currentTrack = state.currentTrack;
+    return state.tracks[state.tracks.indexOf(currentTrack) - 1];
   }
 };
 
@@ -22,6 +35,9 @@ const actions = {
 const mutations = {
   [SET_TRACKS]: function(state, tracks) {
     state.tracks = tracks;
+  },
+  [SET_CURRENT_TRACK]: function(state, track) {
+    state.currentTrack = track;
   }
 };
 

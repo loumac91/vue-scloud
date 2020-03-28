@@ -1,11 +1,11 @@
 <template>
   <main class="page-container">
-    <TrackGrid :tracks="getTracks" />
+    <TrackGrid :tracks="tracks" />
   </main>
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapState } from "vuex";
 import TrackGrid from "@/components/TrackGrid.vue";
 
 export default {
@@ -14,7 +14,9 @@ export default {
     TrackGrid
   },
   computed: {
-    ...mapGetters(["getTracks"])
+    ...mapState({
+      tracks: state => state.track.tracks
+    })
   }
 };
 </script>

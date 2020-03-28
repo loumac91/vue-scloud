@@ -1,46 +1,38 @@
-import { UPDATE_PLAYER_TIMES } from "@/store/action.types";
-import { PLAYER_DEFAULT_VOLUME, PLAYING, PAUSED, ENDED } from "@/constants";
+import { UPDATE_PLAYER_TIMES, LOAD_NEXT_TRACK } from "@/store/action.types";
+import { PLAYING, PAUSED } from "@/constants";
 import {
-  SET_PLAYER,
   SET_PLAYER_STATE,
-  RESET_PLAYER,
   SET_CURRENT_TRACK,
-  SET_CURRENT_TRACK_PLAYING,
   SET_VOLUME
 } from "@/store/mutation.types";
 import { formatReadVolume, formatSetVolume } from "@/utils/formatting";
+import store from "@/store";
 
-export function initialiseAudio(commit, dispatch, track) {
+export function initialiseAudio(track) {
   let audio = new Audio(track.streamUrl);
 
   audio.addEventListener("ended", () => {
-    commit(SET_CURRENT_TRACK_PLAYING, false);
-    commit(SET_CURRENT_TRACK, null);
-    commit(SET_PLAYER_STATE, ENDED);
-    commit(SET_PLAYER, null);
-    commit(RESET_PLAYER); // NOT SURE ABOUT THIS - probably a way to set the next track instead ?
+    store.dispatch(LOAD_NEXT_TRACK);
   });
 
   audio.addEventListener("pause", () => {
-    commit(SET_CURRENT_TRACK_PLAYING, false);
-    commit(SET_PLAYER_STATE, PAUSED);
+    store.commit(SET_PLAYER_STATE, PAUSED);
   });
 
   audio.addEventListener("playing", () => {
-    commit(SET_CURRENT_TRACK, track);
-    commit(SET_PLAYER_STATE, PLAYING);
-    commit(SET_CURRENT_TRACK_PLAYING, true);
+    store.commit(SET_CURRENT_TRACK, track);
+    store.commit(SET_PLAYER_STATE, PLAYING);
   });
 
   audio.addEventListener("volumechange", () => {
-    commit(SET_VOLUME, formatReadVolume(audio.volume));
+    store.commit(SET_VOLUME, formatReadVolume(audio.volume));
   });
 
   audio.addEventListener("timeupdate", e =>
-    dispatch(UPDATE_PLAYER_TIMES, e.target)
+    store.dispatch(UPDATE_PLAYER_TIMES, e.target)
   );
 
-  audio.volume = formatSetVolume(PLAYER_DEFAULT_VOLUME);
+  audio.volume = formatSetVolume(store.getters["getVolume"]);
 
   return audio;
 }

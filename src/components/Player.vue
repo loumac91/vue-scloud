@@ -11,7 +11,7 @@
         {{ getCurrentTime }} / {{ getTrackDuration }}
       </div>
       <div v-if="getCurrentTrack" class="player-controls__track-title">
-        {{ getCurrentTrack.title }}
+        {{ trackTitle }}
       </div>
       <div class="player-controls__volume">
         <Icon :type="'Minus'" @click="decreaseVolume" />
@@ -23,14 +23,16 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapState, mapGetters } from "vuex";
 import Icon from "@/components/Icon.vue";
 import PlayerTimeline from "@/components/PlayerTimeline.vue";
 import {
   SET_PLAYER_PLAYING,
   SET_PLAYER_PAUSED,
   DECREASE_PLAYER_VOLUME,
-  INCREASE_PLAYER_VOLUME
+  INCREASE_PLAYER_VOLUME,
+  LOAD_NEXT_TRACK,
+  LOAD_PREVIOUS_TRACK
 } from "@/store/action.types";
 
 export default {
@@ -40,6 +42,9 @@ export default {
     Icon
   },
   computed: {
+    ...mapState({
+      trackTitle: state => state.player.title
+    }),
     ...mapGetters([
       "isInitialised",
       "getCurrentTrack",
@@ -70,21 +75,24 @@ export default {
     }
   },
   methods: {
-    handleStepBack() {},
+    handleStepBack() {
+      this.$store.dispatch(LOAD_PREVIOUS_TRACK);
+    },
     handlePlayPause() {
       const playerState = this.getIsPlaying
         ? SET_PLAYER_PAUSED
         : SET_PLAYER_PLAYING;
       this.$store.dispatch(playerState);
     },
-    handleStepForward() {},
+    handleStepForward() {
+      this.$store.dispatch(LOAD_NEXT_TRACK);
+    },
     decreaseVolume() {
       this.$store.dispatch(DECREASE_PLAYER_VOLUME);
     },
     increaseVolume() {
       this.$store.dispatch(INCREASE_PLAYER_VOLUME);
-    },
-    handleVolumeChange() {}
+    }
   }
 };
 </script>
@@ -102,8 +110,7 @@ export default {
 }
 
 .player {
-  display: flex;
-  flex-direction: column;
+  display: block;
   height: 100%;
   width: 100%;
   background-color: $base-card-color;
@@ -122,7 +129,7 @@ export default {
     max-width: 970px;
     margin: 0 auto;
     align-items: center;
-    justify-content: center;
+    padding-top: 8px;
     flex: 1;
 
     > * {

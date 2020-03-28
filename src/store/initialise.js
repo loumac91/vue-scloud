@@ -2,8 +2,20 @@ import store from "@/store";
 import { FETCH_TRACKS } from "@/store/action.types";
 import { INITIAL_SEARCH } from "@/constants";
 
-export async function initialiseStore() {
-  await store.dispatch(FETCH_TRACKS, INITIAL_SEARCH);
+export function initialiseStore() {
+  initialiseState();
+  initialiseWatchers();
+}
+
+export function initialiseState() {
+  store.dispatch(FETCH_TRACKS, INITIAL_SEARCH);
+}
+
+export function initialiseWatchers() {
+  // store.watch(
+  //   state => state.getters[""],
+  //   (newValue, oldValue) => {}
+  // );
 }
 
 // const initialDispatch = store.dispatch;

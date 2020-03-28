@@ -8,6 +8,7 @@ Player:
  - Handle when music stops, go to next track
  - Debounce spam playing
  - Fix animation
+ - neumorphic buttons
 
 Tracks:
 
