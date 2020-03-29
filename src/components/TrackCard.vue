@@ -39,7 +39,7 @@ export default {
   data() {
     return {
       override: false,
-      backUpImage: `${process.env.BASE_URL}404_image.jpg`
+      backUpImage: require("@/assets/404_image.png")
     };
   },
   computed: {
