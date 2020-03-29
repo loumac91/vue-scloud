@@ -15,4 +15,6 @@ export const SET_TITLE = "SET_TITLE";
 
 // TRACKS
 export const SET_TRACKS = "SET_TRACKS";
+export const ADD_TRACKS = "ADD_TRACKS";
 export const SET_CURRENT_TRACK = "SET_CURRENT_TRACK";
+export const SET_NEXT_PAGE_URL = "SET_NEXT_PAGE_URL";

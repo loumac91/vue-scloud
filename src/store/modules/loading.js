@@ -1,6 +1,6 @@
 import Vue from "vue";
 import { SET_ACTION_LOADING_STATE } from "@/store/action.types";
-import { SET_LOADING_STATE } from "@/store/mutation.types";
+import { SET_ACTION_STATE } from "@/store/mutation.types";
 
 const state = {
   loadingStates: new Proxy(
@@ -21,14 +21,14 @@ const getters = {
 };
 
 const actions = {
-  [SET_ACTION_LOADING_STATE]: function({ commit }, action) {
-    commit(SET_LOADING_STATE, action);
+  [SET_ACTION_LOADING_STATE]: function({ commit }, { name, loading }) {
+    commit(SET_ACTION_STATE, { name, loading });
   }
 };
 
 const mutations = {
-  [SET_LOADING_STATE]: function(state, { name, status }) {
-    Vue.set(state.loadingStates, name, status);
+  [SET_ACTION_STATE]: function(state, { name, loading }) {
+    Vue.set(state.loadingStates, name, loading);
   }
 };
 

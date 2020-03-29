@@ -1,7 +1,15 @@
 <template>
   <div class="player-timeline" @click="handleClick">
-    <div class="player-timeline__buffer" :style="getBufferedCss"></div>
-    <div class="player-timeline__played" :style="getPlayedCss"></div>
+    <div
+      v-if="track"
+      class="player-timeline__buffer"
+      :style="getBufferedCss"
+    ></div>
+    <div
+      v-if="track"
+      class="player-timeline__played"
+      :style="getPlayedCss"
+    ></div>
   </div>
 </template>
 
@@ -11,6 +19,12 @@ import { SET_PLAYER_CURRENT_TIME } from "@/store/action.types";
 
 export default {
   name: "PlayerTimeline",
+  props: {
+    track: {
+      type: Boolean,
+      required: true
+    }
+  },
   computed: {
     ...mapState({
       trackDuration: state => state.player.trackDuration
@@ -29,6 +43,7 @@ export default {
   },
   methods: {
     handleClick(e) {
+      if (!this.track) return;
       const { currentTarget, pageX } = e;
       const time =
         ((pageX - currentTarget.getBoundingClientRect().left) /

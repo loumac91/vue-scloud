@@ -1,6 +1,6 @@
 <template>
   <div v-if="isInitialised" class="player">
-    <PlayerTimeline />
+    <PlayerTimeline :track="true" />
     <div class="player-controls">
       <div class="player-controls__buttons">
         <Icon

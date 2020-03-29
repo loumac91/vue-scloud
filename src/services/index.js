@@ -1,4 +1,4 @@
 import { initialiseAudio } from "@/services/audioService";
-import { fetchTracks } from "@/services/trackService";
+import { fetchTracks, fetchNextPageUrl } from "@/services/trackService";
 
-export { initialiseAudio, fetchTracks };
+export { initialiseAudio, fetchTracks, fetchNextPageUrl };

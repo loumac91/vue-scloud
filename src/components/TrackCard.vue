@@ -1,12 +1,12 @@
 <template>
   <li class="track-card">
     <div class="track-card__image" @click="handleClick">
-      <img :src="track.artworkUrl" />
+      <img :src="getArtWorkUrl" @error="handleImgError" />
       <div v-if="track.streamable" class="track-card__overlay-container">
         <Icon :type="getPlayingIcon" :large="true" :colour="'black'" />
       </div>
     </div>
-    <PlayerTimeline v-show="isCurrentTrack" />
+    <PlayerTimeline :track="isCurrentTrack" />
     <div class="track-card__content">
       <p class="track-card__title">{{ track.title }}</p>
       <p class="track-card__username">{{ track.username }}</p>
@@ -36,6 +36,12 @@ export default {
       required: true
     }
   },
+  data() {
+    return {
+      override: false,
+      backUpImage: `${process.env.BASE_URL}404_image.jpg`
+    };
+  },
   computed: {
     ...mapGetters(["getIsPlaying", "getIsPaused"]),
     isCurrentTrack() {
@@ -47,6 +53,11 @@ export default {
       const showPause = this.isCurrentTrack && this.getIsPlaying;
 
       return showPlay ? "Play" : showPause ? "Pause" : "";
+    },
+    getArtWorkUrl() {
+      return this.override
+        ? this.backUpImage
+        : this.track.artworkUrl ?? this.backUpImage;
     }
   },
   methods: {
@@ -58,6 +69,10 @@ export default {
       }
 
       this.$store.dispatch(LOAD_PLAYER, this.track);
+    },
+    handleImgError() {
+      console.log("HANDLE");
+      this.override = true;
     }
   }
 };

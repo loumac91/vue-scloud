@@ -13,8 +13,12 @@ Player:
 Tracks:
 
 - Handle scrolling
+- handle nothing coming back
+- Loading while waiting
+- if you search for new term, next song will be the ones rendered
 
 TrackCard:
 
 - Debounce spam clicking
 - IsCurrentTrack for playertimeline is wrong
+- alternate image
