@@ -1,5 +1,5 @@
 <template>
-  <button :class="['btn', getButtonCss]" v-on="$listeners">
+  <button :type="type" :class="['btn', getButtonCss]" v-on="$listeners">
     <i :class="['fas', getIcon, getSize, getColour]"></i>
   </button>
 </template>
@@ -8,9 +8,14 @@
 export default {
   name: "Icon",
   props: {
-    type: {
+    icon: {
       type: String,
       required: true
+    },
+    type: {
+      type: String,
+      required: false,
+      default: ""
     },
     large: {
       type: Boolean,
@@ -34,7 +39,7 @@ export default {
       return this.neumorphic ? "btn--neumorphic" : "";
     },
     getIcon() {
-      switch (this.type) {
+      switch (this.icon) {
         case "StepBackward":
           return "fa-step-backward";
         case "StepForward":
@@ -47,6 +52,8 @@ export default {
           return "fa-minus";
         case "Plus":
           return "fa-plus";
+        case "Search":
+          return "fa-search";
         default:
           return null;
       }

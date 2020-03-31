@@ -1,5 +1,5 @@
 <template>
-  <main class="page-container">
+  <main class="track-container">
     <TrackGrid :tracks="tracks" />
     <div v-show="getIsMoreTracks" ref="trigger" class="scroll-trigger"></div>
   </main>
@@ -42,6 +42,18 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import "@/styles/variables.scss";
+
+.track-container {
+  display: flex;
+  flex-direction: column;
+  margin-top: 80px;
+  min-width: 368px;
+  max-width: $base-max-width;
+  margin: 0 auto;
+  align-items: center;
+}
+
 .scroll-trigger {
   height: 200px;
 }

@@ -29,6 +29,8 @@ export default {
 .track-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax($min-card-width, 1fr));
-  grid-gap: 16px;
+  grid-gap: 12px;
+  width: 100%;
+  padding: 0 8px;
 }
 </style>

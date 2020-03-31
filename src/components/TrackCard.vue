@@ -3,7 +3,7 @@
     <div class="track-card__image" @click="handleClick">
       <img :src="getArtWorkUrl" @error="handleImgError" />
       <div v-if="track.streamable" class="track-card__overlay-container">
-        <Icon :type="getPlayingIcon" :large="true" :colour="'black'" />
+        <IconButton :icon="getPlayingIcon" :large="true" :colour="'black'" />
       </div>
     </div>
     <PlayerTimeline :track="isCurrentTrack" />
@@ -16,7 +16,7 @@
 
 <script>
 import { mapGetters } from "vuex";
-import Icon from "@/components/Icon.vue";
+import IconButton from "@/components/IconButton.vue";
 import PlayerTimeline from "@/components/PlayerTimeline.vue";
 import {
   LOAD_PLAYER,
@@ -28,7 +28,7 @@ export default {
   name: "TrackCard",
   components: {
     PlayerTimeline,
-    Icon
+    IconButton
   },
   props: {
     track: {
@@ -71,7 +71,6 @@ export default {
       this.$store.dispatch(LOAD_PLAYER, this.track);
     },
     handleImgError() {
-      console.log("HANDLE");
       this.override = true;
     }
   }
@@ -85,7 +84,7 @@ export default {
   display: flex;
   flex-direction: column;
   border-radius: map-get($radius, heavy);
-  background-color: $base-card-color;
+  // background-color: $base-card-color;
   background: linear-gradient(145deg, #d4d5d9, #fdfeff);
   box-shadow: 20px 20px 60px #c9c9cd, -20px -20px 60px #ffffff;
 

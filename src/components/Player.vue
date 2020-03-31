@@ -1,20 +1,20 @@
 <template>
-  <div v-if="isInitialised" class="player">
+  <div v-show="isInitialised" class="player">
     <PlayerTimeline :track="true" />
     <div class="player-controls">
       <div class="player-controls__buttons">
-        <Icon
-          :type="'StepBackward'"
+        <IconButton
+          :icon="'StepBackward'"
           :neumorphic="true"
           @click="handleStepBack"
         />
-        <Icon
-          :type="getPlayingIcon"
+        <IconButton
+          :icon="getPlayingIcon"
           :neumorphic="true"
           @click="handlePlayPause"
         />
-        <Icon
-          :type="'StepForward'"
+        <IconButton
+          :icon="'StepForward'"
           :neumorphic="true"
           @click="handleStepForward"
         />
@@ -26,9 +26,13 @@
         {{ trackTitle }}
       </div>
       <div class="player-controls__volume">
-        <Icon :type="'Minus'" :neumorphic="true" @click="decreaseVolume" />
+        <IconButton
+          :icon="'Minus'"
+          :neumorphic="true"
+          @click="decreaseVolume"
+        />
         {{ getVolume }}
-        <Icon :type="'Plus'" :neumorphic="true" @click="increaseVolume" />
+        <IconButton :icon="'Plus'" :neumorphic="true" @click="increaseVolume" />
       </div>
     </div>
   </div>
@@ -36,7 +40,7 @@
 
 <script>
 import { mapState, mapGetters } from "vuex";
-import Icon from "@/components/Icon.vue";
+import IconButton from "@/components/IconButton.vue";
 import PlayerTimeline from "@/components/PlayerTimeline.vue";
 import {
   SET_PLAYER_PLAYING,
@@ -51,7 +55,7 @@ export default {
   name: "Player",
   components: {
     PlayerTimeline,
-    Icon
+    IconButton
   },
   computed: {
     ...mapState({
@@ -122,15 +126,11 @@ export default {
 }
 
 .player {
-  display: block;
-  height: 100%;
   width: 100%;
   background-color: $base-card-color;
   border-top-left-radius: map-get($radius, "base");
   border-top-right-radius: map-get($radius, "base");
   overflow: hidden;
-
-  transform: translateZ(0);
   animation-name: reveal-player;
   animation-iteration-count: 1;
   animation-timing-function: ease-in-out;
@@ -138,7 +138,7 @@ export default {
 
   &-controls {
     display: flex;
-    max-width: 970px;
+    max-width: $base-max-width;
     margin: 0 auto;
     align-items: center;
     padding-top: 8px;
