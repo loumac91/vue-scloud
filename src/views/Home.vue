@@ -15,18 +15,26 @@ export default {
   components: {
     TrackGrid
   },
+  data() {
+    return {
+      scrollListener: null
+    };
+  },
   computed: {
     ...mapState({
-      tracks: state => state.track.tracks
+      tracks: state => state.track.activeTracklist // this needs to be the search results
     }),
     ...mapGetters(["getIsMoreTracks", "getLoadingState"])
   },
   mounted() {
     this.initScrollTrigger();
   },
+  beforeDestroy() {
+    this.destroyScrollListener();
+  },
   methods: {
     initScrollTrigger() {
-      window.onscroll = () => {
+      this.scrollListener = window.addEventListener("scroll", () => {
         const el = this.$refs.trigger;
         let triggerReached =
           document.documentElement.scrollTop + window.innerHeight >=
@@ -35,7 +43,10 @@ export default {
         if (triggerReached && !this.getLoadingState(FETCH_NEXT_PAGE_URL)) {
           this.$store.dispatch(FETCH_NEXT_PAGE_URL);
         }
-      };
+      });
+    },
+    destroyScrollListener() {
+      window.removeEventListener("scroll", this.scrollListener);
     }
   }
 };

@@ -77,6 +77,7 @@ export default {
 
     &-layout {
       display: flex;
+      height: 100%;
       max-width: $base-max-width;
       margin: 0 auto;
       align-items: center;
